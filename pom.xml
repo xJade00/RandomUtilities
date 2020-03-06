@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>it.xaan.random</groupId>
+  <artifactId>RandomUtilities</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0</version>
+
+  <properties>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <spotless.version>1.27.0</spotless.version>
+  </properties>
+
+
+  <modules>
+    <module>result</module>
+    <module>core</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.diffplug.spotless</groupId>
+      <artifactId>spotless-maven-plugin</artifactId>
+      <version>${spotless.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless.version}</version>
+        <configuration>
+          <java>
+            <licenseHeader>
+              <file>${basedir}\header.txt</file>
+            </licenseHeader>
+            <googleJavaFormat>
+              <version>1.5</version>
+              <style>GOOGLE</style>
+            </googleJavaFormat>
+            <removeUnusedImports/>
+          </java>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+
+</project>
