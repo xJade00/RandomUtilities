@@ -83,6 +83,18 @@ public class Result<T> {
     builder.build(scope, this);
   }
 
+  public boolean exists(String key, TemplateScope scope) {
+    switch (scope) {
+      case BOTH:
+        return exists(key, TemplateScope.GLOBAL) && exists(key, TemplateScope.LOCAL);
+      case GLOBAL:
+        return GLOBAL_TEMPLATING.exists(key);
+      case LOCAL:
+        return localTemplating.exists(key);
+    }
+    throw new IllegalArgumentException("Scope can't be null");
+  }
+
   public void applyTemplates(TemplateScope scope, String... keys) {
     if (keys.length == 0) {
       return;
@@ -104,6 +116,7 @@ public class Result<T> {
             "If you see this then something is seriously wrong. Like seriously wrong. It physically should not be allowed here. It should stackoverflow before getting here.");
     }
     for (String key : keys) {
+      if (!exists(key, TemplateScope.BOTH)) continue;
       if (isSuccess()) {
         template.success(key, element.getClass()).ifPresent(cons -> cons.accept(element));
       }
