@@ -5,7 +5,7 @@
   <parent>
     <artifactId>RandomUtilities</artifactId>
     <groupId>it.xaan.random</groupId>
-    <version>1.0</version>
+    <version>1.0.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -16,13 +16,7 @@
     <dependency>
       <groupId>it.xaan.random</groupId>
       <artifactId>core</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.diffplug.spotless</groupId>
-      <artifactId>spotless-maven-plugin</artifactId>
-      <version>${spotless.version}</version>
-      <scope>provided</scope>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 

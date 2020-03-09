@@ -7,7 +7,7 @@
   <groupId>it.xaan.random</groupId>
   <artifactId>RandomUtilities</artifactId>
   <packaging>pom</packaging>
-  <version>1.0</version>
+  <version>1.0.0</version>
 
   <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
