@@ -26,6 +26,8 @@ import javax.annotation.meta.TypeQualifierDefault;
 /**
  * A helper annotation since JSR305 doesn't provide one. This tells the caller that, unless
  * otherwise specified, the return type of this will not be null.
+ *
+ * @since 1.0.0
  */
 @Nonnull
 @TypeQualifierDefault(ElementType.METHOD)

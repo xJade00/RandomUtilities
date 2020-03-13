@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
  *
  * @param <A> The type of the first variable.
  * @param <B> The type for the second variable.
+ * @since 1.0.0
  */
 @SuppressWarnings("WeakerAccess")
 public class Pair<A, B> {
@@ -45,6 +46,7 @@ public class Pair<A, B> {
    * @param <X> The type of the first element.
    * @param <Y> The type of the second element.
    * @return A new instance of Pair with the specified elements.
+   * @since 1.0.0
    */
   public static <X, Y> Pair<X, Y> from(@Nullable X first, @Nullable Y second) {
     return new Pair<>(first, second);
@@ -54,6 +56,7 @@ public class Pair<A, B> {
    * Getter for the first element.
    *
    * @return The possibly-null first element.
+   * @since 1.0.0
    */
   public @Nullable A getFirst() {
     return first;
@@ -63,6 +66,7 @@ public class Pair<A, B> {
    * Getter for the second element.
    *
    * @return The possibly-null second element.
+   * @since 1.0.0
    */
   public @Nullable B getSecond() {
     return second;
