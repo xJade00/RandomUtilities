@@ -16,7 +16,7 @@
     <dependency>
       <groupId>it.xaan.random</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0</version>
+      <version>${revision}</version>
     </dependency>
   </dependencies>
 
