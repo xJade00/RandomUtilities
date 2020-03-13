@@ -20,24 +20,51 @@ package it.xaan.random.core;
 import java.util.Objects;
 import javax.annotation.Nullable;
 
+/**
+ * Represents two values, for when you need to return multiple things.
+ *
+ * @param <A> The type of the first variable.
+ * @param <B> The type for the second variable.
+ */
+@SuppressWarnings("WeakerAccess")
 public class Pair<A, B> {
   private final @Nullable A first;
   private final @Nullable B second;
 
+  // Constructor
   private Pair(@Nullable A first, @Nullable B second) {
     this.first = first;
     this.second = second;
   }
 
+  /**
+   * Constructs a new {@link Pair}.
+   *
+   * @param first The possibly-null first element.
+   * @param second The possibly-null second element.
+   * @param <X> The type of the first element.
+   * @param <Y> The type of the second element.
+   * @return A new instance of Pair with the specified elements.
+   */
   public static <X, Y> Pair<X, Y> from(@Nullable X first, @Nullable Y second) {
     return new Pair<>(first, second);
   }
 
-  public A getFirst() {
+  /**
+   * Getter for the first element.
+   *
+   * @return The possibly-null first element.
+   */
+  public @Nullable A getFirst() {
     return first;
   }
 
-  public B getSecond() {
+  /**
+   * Getter for the second element.
+   *
+   * @return The possibly-null second element.
+   */
+  public @Nullable B getSecond() {
     return second;
   }
 
@@ -46,15 +73,7 @@ public class Pair<A, B> {
     if (this == obj) return true;
     if (!(obj instanceof Pair)) return false;
     Pair<?, ?> other = (Pair<?, ?>) obj;
-    boolean secondCheck;
-    if (this.second instanceof Class && other.second instanceof Class) {
-      Class<?> ours = (Class<?>) this.second;
-      Class<?> theirs = (Class<?>) other.second;
-      secondCheck = theirs.isAssignableFrom(ours);
-    } else {
-      secondCheck = Objects.equals(this.second, other.second);
-    }
-    return Objects.equals(this.first, other.first) && secondCheck;
+    return Objects.equals(this.first, other.first) && Objects.equals(this.first, other.first);
   }
 
   @Override
