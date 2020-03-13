@@ -229,7 +229,7 @@ public final class Result<T> {
    * @param filter The predicate to test against.
    * @return An empty Result if the filter returns false and the current Result is in a Success
    *     state, otherwise the current instance.
-   *     @since 1.0.0
+   * @since 1.0.0
    */
   public Result<T> filter(Predicate<T> filter) {
     return isSuccess() && !filter.test(element) ? empty() : this;
@@ -246,7 +246,7 @@ public final class Result<T> {
    * @return If the current Result is in the Success state, new Result in the Empty state if the
    *     function returns null, or a Success state with the new element. In any other state a new
    *     Result is returned with the same information.
-   *     @since 1.0.0
+   * @since 1.0.0
    */
   public <U> Result<U> map(Function<? super T, U> func) {
     if (isEmpty()) {
@@ -255,7 +255,9 @@ public final class Result<T> {
       return ofNullable(func.apply(this.element));
     } else {
       // IntelliJ disagrees but it's not empty or a success, it's an error.
-      return error(Objects.requireNonNull(this.error, "Should never happen. If this ever happens the world is ending."));
+      return error(
+          Objects.requireNonNull(
+              this.error, "Should never happen. If this ever happens the world is ending."));
     }
   }
 
@@ -275,12 +277,15 @@ public final class Result<T> {
     } else if (isSuccess()) {
       return func.apply(this.element);
     } else {
-      return error(Objects.requireNonNull(this.error, "Should never happen. If this ever happens the world is ending."));
+      return error(
+          Objects.requireNonNull(
+              this.error, "Should never happen. If this ever happens the world is ending."));
     }
   }
 
   /**
-   * Retrieves the current element from this {@link Result} if it's in a Success state, otherwise errors.
+   * Retrieves the current element from this {@link Result} if it's in a Success state, otherwise
+   * errors.
    *
    * @return The non-null element.
    * @throws NoSuchElementException If {@link #isSuccess()} returns false.
@@ -305,11 +310,12 @@ public final class Result<T> {
 
   /**
    * Retrieves the current element from this {@link Result} if it's in a success state, otherwise
-   * returns the result of the passed {@link Supplier}. It should be noted that while this is marked as nullable, it's
-   * not possible for this to return null unless you the supplier returns null.
+   * returns the result of the passed {@link Supplier}. It should be noted that while this is marked
+   * as nullable, it's not possible for this to return null unless you the supplier returns null.
    *
    * @param supplier The supplier to default to.
-   * @return The current value, or the return value of the supplier passed if this Result isn't in a Success state.
+   * @return The current value, or the return value of the supplier passed if this Result isn't in a
+   *     Success state.
    * @since 1.0.0
    */
   public @Nullable T orElseGet(Supplier<T> supplier) {
