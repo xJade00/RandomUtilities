@@ -25,12 +25,36 @@ public class PairTest {
 
   @Test
   public void testEquals() {
-    Assert.assertEquals(Pair.from("Hello", "World"), test);
+    final Pair<String, String> second = Pair.from("Hello", "World");
+    final Pair<String, String> third = Pair.from("Hello", "World");
+    // Test equals' 5 rules.
+    // Reflexive.
+    Assert.assertEquals(test, test);
+    // Symmetric
+    Assert.assertEquals(test, second);
+    Assert.assertEquals(second, test);
+    // Transitive
+    Assert.assertEquals(test, second);
+    Assert.assertEquals(second, third);
+    Assert.assertEquals(test, third);
+    // Consistent
+    Assert.assertEquals(test, second);
+    Assert.assertEquals(test, second);
+    // null
+    Assert.assertNotNull(test);
   }
 
   @Test
   public void testHashcode() {
-    Assert.assertEquals(-2053301055, test.hashCode());
+    Pair<String, String> ea = Pair.from("Ea", "Ea");
+    Pair<String, String> fb = Pair.from("FB", "FB");
+    // Test hashcode's contract
+    // Consistency
+    Assert.assertEquals(72513, ea.hashCode());
+    Assert.assertEquals(72513, ea.hashCode());
+    // Same hashcode doesn't mean same objecft.
+    Assert.assertEquals(ea.hashCode(), fb.hashCode());
+    Assert.assertNotEquals(ea, fb);
   }
 
   @Test
