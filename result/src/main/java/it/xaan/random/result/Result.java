@@ -37,8 +37,9 @@ import javax.annotation.Nullable;
  *
  * @since 1.0.0
  */
-@SuppressWarnings({"unused", "unchecked", "WeakerAccess", "null"})
+@SuppressWarnings({"unused", "WeakerAccess"})
 public final class Result<T> {
+  private static final Result<?> EMPTY = Result.from(null, null);
 
   private final T element;
   private final Object error;
@@ -104,8 +105,9 @@ public final class Result<T> {
    * @return An instance of Result in the Empty state.
    * @since 1.0.0
    */
+  @SuppressWarnings("unchecked")
   public static <U> Result<U> empty() {
-    return from(null, null);
+    return (Result<U>) EMPTY;
   }
 
   // Checks
@@ -117,7 +119,7 @@ public final class Result<T> {
    * @since 1.0.0
    */
   public boolean isEmpty() {
-    return !isSuccess() && !isError();
+    return this == EMPTY;
   }
 
   /**
@@ -209,6 +211,7 @@ public final class Result<T> {
    * @return The current instance, useful for chaining.
    * @since 1.0.0
    */
+  @SuppressWarnings("unchecked")
   public <U> Result<T> onError(Class<? extends U> clazz, Consumer<U> cons) {
     if (isError(clazz)) {
       cons.accept((U) this.error);
