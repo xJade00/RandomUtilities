@@ -14,7 +14,9 @@ With sbt:
 
 ### All current modules:
 
-| Name   | Description                                         |
-|:-------|:----------------------------------------------------|
-| core   | Random utilities that other modules will depend on. |
-| result | A more expansive Optional.                          |
+| Name                      | Description                                                                                       | Status                                           |
+|:--------------------------|:--------------------------------------------------------------------------------------------------|:-------------------------------------------------|
+| core                      | Random utilities that other modules will depend on.                                               | Always more to add when another module needs it. |
+| result                    | A more expansive Optional.                                                                        | Needs testing. Otherwise finished.               |
+| event-dispatcher          | A generic EventDispatcher                                                                         | Planned                                          |
+| primitive-specializations | A collection of primitive specializations, so you never have to use `Map<String, Integer>` again. | Planned                                          |
