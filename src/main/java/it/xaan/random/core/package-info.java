@@ -17,7 +17,6 @@
  */
 @ParametersAreNonnullByDefault
 @ReturnTypesAreNonNullByDefault
-package it.xaan.random.result;
+package it.xaan.random.core;
 
-import it.xaan.random.core.ReturnTypesAreNonNullByDefault;
 import javax.annotation.ParametersAreNonnullByDefault;
