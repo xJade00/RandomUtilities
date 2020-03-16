@@ -1,7 +1,6 @@
 name := "Random Utilities"
 description := "A bunch of random utilities."
-//autoScalaLibrary := false // We don't want people using this to auto have the java SDK
-scalaVersion := "2.13.1"
+autoScalaLibrary := false // We don't want people using this to auto have the java SDK
 
 inThisBuild(
   Seq(
@@ -20,6 +19,7 @@ inThisBuild(
     )
   ))
 
+
 lazy val core = project in file(".") //we need a variable reference to the root project
 
 lazy val result = Project(id = "result", base = file("result"))
@@ -27,3 +27,5 @@ lazy val result = Project(id = "result", base = file("result"))
     fork := true
   )
   .dependsOn(core)
+
+
