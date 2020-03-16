@@ -71,4 +71,4 @@ fabric.properties
 
 
 src/test/
-.gradle/
+.gradle/.idea\

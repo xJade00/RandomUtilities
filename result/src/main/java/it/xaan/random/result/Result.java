@@ -39,6 +39,7 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 public final class Result<T> {
+
   private static final Result<?> EMPTY = Result.from(null, null);
 
   private final T element;
@@ -65,7 +66,7 @@ public final class Result<T> {
    * element is possibly-null see {@link #ofNullable(Object)}
    *
    * @param element The element for this Result.
-   * @param <U> The type of the result.
+   * @param <U>     The type of the result.
    * @return An instance of Result in the Success state.
    * @since 1.0.0
    */
@@ -77,9 +78,9 @@ public final class Result<T> {
    * Creates a new {@link Result} in the Success state or the empty state.
    *
    * @param element The possibly-null element for this Result.
-   * @param <U> The type of the result.
+   * @param <U>     The type of the result.
    * @return An instance of Result in the Success state if the element is non-null, otherwise it'll
-   *     be in the Empty state.
+   * be in the Empty state.
    * @since 1.0.0
    */
   public static <U> Result<U> ofNullable(@Nullable U element) {
@@ -90,7 +91,7 @@ public final class Result<T> {
    * Creates a new {@link Result} in the Error state.
    *
    * @param error The error for this Result.
-   * @param <U> The type of the Result.
+   * @param <U>   The type of the Result.
    * @return An instance of Result in the Error state.
    * @since 1.0.0
    */
@@ -147,7 +148,7 @@ public final class Result<T> {
    *
    * @param clazz The class to check against.
    * @return true if it's this Result is in an Error state and the current error is an instance of
-   *     the class.
+   * the class.
    * @since 1.0.0
    */
   public boolean isError(Class<?> clazz) {
@@ -206,7 +207,7 @@ public final class Result<T> {
    * is specific to String, rather than generic to {@link Object}. Please contact any library
    * developer that doesn't specify all possible errors so you don't have to guess.
    *
-   * @param cons The consumer to run.
+   * @param cons  The consumer to run.
    * @param clazz The class to run on.
    * @return The current instance, useful for chaining.
    * @since 1.0.0
@@ -228,7 +229,7 @@ public final class Result<T> {
    *
    * @param filter The predicate to test against.
    * @return An empty Result if the filter returns false and the current Result is in a Success
-   *     state, otherwise the current instance.
+   * state, otherwise the current instance.
    * @since 1.0.0
    */
   public Result<T> filter(Predicate<T> filter) {
@@ -242,10 +243,10 @@ public final class Result<T> {
    * a new Result is returned with the same information.
    *
    * @param func The function to map from the current element to a new one.
-   * @param <U> The type of the new Result.
+   * @param <U>  The type of the new Result.
    * @return If the current Result is in the Success state, new Result in the Empty state if the
-   *     function returns null, or a Success state with the new element. In any other state a new
-   *     Result is returned with the same information.
+   * function returns null, or a Success state with the new element. In any other state a new
+   * Result is returned with the same information.
    * @since 1.0.0
    */
   public <U> Result<U> map(Function<? super T, U> func) {
@@ -266,9 +267,9 @@ public final class Result<T> {
    * called when the Result is in a Success state.
    *
    * @param func The function to map from the current element to a new one.
-   * @param <U> The type of the new Result.
+   * @param <U>  The type of the new Result.
    * @return If the current Result is in the Success state, the Result returned from the function.
-   *     In any other state a new Result is returned with the same information.
+   * In any other state a new Result is returned with the same information.
    * @since 1.0.0
    */
   public <U> Result<U> flatMap(Function<T, Result<U>> func) {
@@ -304,7 +305,8 @@ public final class Result<T> {
    * @return The current value, or the parameter passed if this Result isn't in a Success state.
    * @since 1.0.0
    */
-  public @Nullable T orElse(@Nullable T other) {
+  public @Nullable
+  T orElse(@Nullable T other) {
     return isSuccess() ? get() : other;
   }
 
@@ -315,10 +317,11 @@ public final class Result<T> {
    *
    * @param supplier The supplier to default to.
    * @return The current value, or the return value of the supplier passed if this Result isn't in a
-   *     Success state.
+   * Success state.
    * @since 1.0.0
    */
-  public @Nullable T orElseGet(Supplier<T> supplier) {
+  public @Nullable
+  T orElseGet(Supplier<T> supplier) {
     return orElse(supplier.get());
   }
 
@@ -327,7 +330,7 @@ public final class Result<T> {
    * throws the supplied exception.
    *
    * @param supplier The supplier of the exception.
-   * @param <X> The element, useful for type checking.
+   * @param <X>      The element, useful for type checking.
    * @return The element.
    * @throws X If the Result is in a state other than Success.
    */

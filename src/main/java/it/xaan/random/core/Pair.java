@@ -29,8 +29,11 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings("WeakerAccess")
 public class Pair<A, B> {
-  private final @Nullable A first;
-  private final @Nullable B second;
+
+  @Nullable
+  private final A first;
+  @Nullable
+  private final B second;
 
   // Constructor
   private Pair(@Nullable A first, @Nullable B second) {
@@ -41,10 +44,10 @@ public class Pair<A, B> {
   /**
    * Constructs a new {@link Pair}.
    *
-   * @param first The possibly-null first element.
+   * @param first  The possibly-null first element.
    * @param second The possibly-null second element.
-   * @param <X> The type of the first element.
-   * @param <Y> The type of the second element.
+   * @param <X>    The type of the first element.
+   * @param <Y>    The type of the second element.
    * @return A new instance of Pair with the specified elements.
    * @since 1.0.0
    */
@@ -58,7 +61,8 @@ public class Pair<A, B> {
    * @return The possibly-null first element.
    * @since 1.0.0
    */
-  public @Nullable A getFirst() {
+  public @Nullable
+  A getFirst() {
     return first;
   }
 
@@ -68,14 +72,19 @@ public class Pair<A, B> {
    * @return The possibly-null second element.
    * @since 1.0.0
    */
-  public @Nullable B getSecond() {
+  public @Nullable
+  B getSecond() {
     return second;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (!(obj instanceof Pair)) return false;
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof Pair)) {
+      return false;
+    }
     Pair<?, ?> other = (Pair<?, ?>) obj;
     return Objects.equals(this.first, other.first) && Objects.equals(this.first, other.first);
   }

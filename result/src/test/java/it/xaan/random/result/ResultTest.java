@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ResultTest {
+
   // TODO: FINISH. AND RE-WRITE.
   private final Result<String> success = Result.of("Successful state.");
   private final Result<String> error = Result.error(new IllegalStateException("Error state."));
