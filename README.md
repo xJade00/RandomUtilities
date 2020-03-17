@@ -20,4 +20,4 @@ With sbt:
 | result                    | A more expansive Optional.                                                                        | Needs testing. Otherwise finished.               | Java     |
 | event-dispatcher          | A generic EventDispatcher                                                                         | Planned                                          | Java     |
 | primitive-specializations | A collection of primitive specializations, so you never have to use `Map<String, Integer>` again. | Planned                                          | Java     |
-| cache                     | A way to cache various objects                                                                    | Planned                                          | Java     |
+| cache                     | A way to cache various objects                                                                    | Started                                          | Java     |
