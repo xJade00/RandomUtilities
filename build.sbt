@@ -28,4 +28,10 @@ lazy val result = Project(id = "result", base = file("result"))
   )
   .dependsOn(core)
 
+lazy val cache = Project(id = "cache", base = file("cache"))
+  .settings(
+    fork := true
+  )
+  .dependsOn(core)
+
 
