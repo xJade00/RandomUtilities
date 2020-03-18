@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 @SuppressWarnings("unused")
 public interface Cache<K, V> {
 
+  // Slightly modified from https://stackoverflow.com/a/35809896/10977609
   @SuppressWarnings("all")
   static <T> CompletableFuture<List<T>> allOf(List<CompletableFuture<T>> futuresList) {
     CompletableFuture<Void> allFuturesResult =
