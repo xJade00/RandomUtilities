@@ -69,6 +69,4 @@ fabric.properties
 .idea/
 /guilds/
 
-
-src/test/
 .gradle/.idea\
