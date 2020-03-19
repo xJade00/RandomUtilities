@@ -6,28 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("unused")
 public interface Cache<K, V> {
-
-  // Slightly modified from https://stackoverflow.com/a/35809896/10977609
-  @SuppressWarnings("all")
-  static <T> CompletableFuture<List<T>> allOf(List<CompletableFuture<T>> futuresList) {
-    CompletableFuture<Void> allFuturesResult =
-        CompletableFuture.allOf(futuresList.toArray((CompletableFuture<T>[]) new Object[0]));
-    return allFuturesResult.thenApply(v ->
-        futuresList.stream().
-            map(CompletableFuture::join).
-            collect(Collectors.<T>toList())
-    );
-  }
 
   /**
    * Gets a value from the cache.
@@ -44,8 +30,9 @@ public interface Cache<K, V> {
    *
    * @param key   The key to save under.
    * @param value The value to save as.
-   * @return The last known value of the key. If there was no value, it returns {@link Optional#empty()}
+   * @return The last known value of the key. If there was no value, it returns {@link Optional#empty()}.
    */
+  @SuppressWarnings("UnusedReturnValue")
   Optional<V> store(K key, V value);
 
   /**
@@ -53,34 +40,10 @@ public interface Cache<K, V> {
    * use, even if it isn't immediately removed from the cache.
    *
    * @param key The key to invalidate.
-   * @return A {@link CompletableFuture} with the last known value of the key. If there was no value,
-   * the {@link Optional} will be empty. The future completes when the
+   * @return A {@link Optional} with the last known value of the key. If there was no value,
+   * the Optional will be empty.
    */
-  CompletableFuture<Optional<V>> invalidate(K key);
-
-  /**
-   * Invalidates a number of entries based on the passed {@link Predicate}. This means that
-   * none of the keys affected by this filter should be considered no longer safe to use,
-   * even if none are immediately removed from the cache. Keys are invalidated when the
-   * Predicate returns true.
-   *
-   * @param filter The Predicate for filtering.
-   * @return A {@link CompletableFuture} that contains a {@link List} of values associated
-   * with the keys that were invalidated.
-   */
-  CompletableFuture<List<V>> invalidateWhere(Predicate<K> filter);
-
-  /**
-   * Invalidates a number of entries based on the passed {@link BiPredicate}. This means that
-   * none of the keys affected by this filter should be considered no longer safe to use,
-   * even if none are immediately removed from the cache. Keys are invalidated when the
-   * BiPredicate returns true.
-   *
-   * @param filter The BiPredicate for filtering.
-   * @return A {@link CompletableFuture} that contains a {@link List} of key-value {@link Pair}s
-   * that were invalidated.
-   */
-  CompletableFuture<List<Pair<K, V>>> invalidateWhere(BiPredicate<K, V> filter);
+  Optional<V> invalidate(K key);
 
   /**
    * Gets the entries for this Cache. This is an immutable view and can't be interacted with.
@@ -101,6 +64,57 @@ public interface Cache<K, V> {
    * @return A new Cache containing the new entries the mapper found.
    */
   <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper);
+
+  /**
+   * See {@link #store(Object, Object)}.
+   *
+   * @param pair The key-value pair to add.
+   * @return The last known value of the key. If there was no value, it returns {@link Optional#empty()}
+   */
+  @SuppressWarnings("ConstantConditions")
+  default Optional<V> store(Pair<K, V> pair) {
+    return store(pair.getFirst(), pair.getSecond());
+  }
+
+
+  /**
+   * Invalidates a number of entries based on the passed {@link Predicate}. This means that
+   * none of the keys affected by this filter should be considered no longer safe to use,
+   * even if none are immediately removed from the cache. Keys are invalidated when the
+   * Predicate returns true.
+   *
+   * @param filter The Predicate for filtering.
+   * @return A {@link List} of values associated with the keys that were invalidated.
+   */
+  default List<V> invalidateWhere(Predicate<K> filter) {
+    List<V> list = new ArrayList<>();
+    List<Pair<K,V>> found = invalidateWhere((key, $) -> filter.test(key));
+    for (Pair<K, V> kvPair : found) {
+      list.add(kvPair.getSecond());
+    }
+    return list;
+  }
+
+  /**
+   * Invalidates a number of entries based on the passed {@link BiPredicate}. This means that
+   * none of the keys affected by this filter should be considered no longer safe to use,
+   * even if none are immediately removed from the cache. Keys are invalidated when the
+   * BiPredicate returns true.
+   *
+   * @param filter The BiPredicate for filtering.
+   * @return A {@link List} of key-value {@link Pair}s that were invalidated.
+   */
+  @SuppressWarnings("ConstantConditions")
+  default List<Pair<K, V>> invalidateWhere(BiPredicate<K, V> filter) {
+    List<Pair<K, V>> list = new ArrayList<>();
+    for (Pair<K, V> entry : entries()) {
+      if(filter.test(entry.getFirst(), entry.getSecond())) {
+        list.add(entry);
+        invalidate(entry.getFirst());
+      }
+    }
+    return list;
+  }
 
   /**
    * Gets the size of the {@link Cache}.
@@ -134,10 +148,9 @@ public interface Cache<K, V> {
   /**
    * Invalidates every entry in the cache. See {@link #invalidate(Object)}.
    *
-   * @return A {@link CompletableFuture} that completes with all entries when every
-   * entry has been invalidated.
+   * @return A {@link List}  with all entries.
    */
-  default CompletableFuture<List<Pair<K, V>>> invalidateAll() {
+  default List<Pair<K, V>> invalidateAll() {
     return invalidateWhere(($, $$) -> true);
   }
 
