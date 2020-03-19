@@ -305,8 +305,8 @@ public final class Result<T> {
    * @return The current value, or the parameter passed if this Result isn't in a Success state.
    * @since 1.0.0
    */
-  public @Nullable
-  T orElse(@Nullable T other) {
+  @Nullable
+  public T orElse(@Nullable T other) {
     return isSuccess() ? get() : other;
   }
 
@@ -320,8 +320,8 @@ public final class Result<T> {
    * Success state.
    * @since 1.0.0
    */
-  public @Nullable
-  T orElseGet(Supplier<T> supplier) {
+  @Nullable
+  public T orElseGet(Supplier<T> supplier) {
     return orElse(supplier.get());
   }
 
