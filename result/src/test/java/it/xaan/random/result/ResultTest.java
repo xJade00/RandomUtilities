@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ResultTest {
+
   private final Result<String> success = Result.of("Successful state.");
   private final Result<String> error = Result.error(new IllegalStateException("Error state."));
   private final Result<String> empty = Result.empty();
@@ -177,10 +178,13 @@ public class ResultTest {
   public void testOrElseThrow() {
     final String other = "Hello world";
     // Shouldn't be else for success
-    Assert.assertEquals("Success State", success.orElseThrow(() -> new IllegalStateException("Shouldn't be here.")));
+    Assert.assertEquals("Success State",
+        success.orElseThrow(() -> new IllegalStateException("Shouldn't be here.")));
 
     // Should be else for everything else
-    Assert.assertThrows(NoSuchElementException.class, () -> empty.orElseThrow(() -> new NoSuchElementException("No such element.")));
-    Assert.assertThrows(NoSuchElementException.class, () -> error.orElseThrow(() -> new NoSuchElementException("No such element.")));
+    Assert.assertThrows(NoSuchElementException.class,
+        () -> empty.orElseThrow(() -> new NoSuchElementException("No such element.")));
+    Assert.assertThrows(NoSuchElementException.class,
+        () -> error.orElseThrow(() -> new NoSuchElementException("No such element.")));
   }
 }
