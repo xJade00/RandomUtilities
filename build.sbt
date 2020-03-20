@@ -47,12 +47,13 @@ val commonSettings = Seq(
 
 
 lazy val core = (project in file("."))
-  .settings(commonSettings) //we need a variable reference to the root project
+  .settings(commonSettings, publishSettings) //we need a variable reference to the root project
 
 
 lazy val result = Project(id = "result", base = file("result"))
   .settings(
     commonSettings,
+    publishSettings,
     fork := true
   )
   .dependsOn(core)
@@ -60,6 +61,7 @@ lazy val result = Project(id = "result", base = file("result"))
 lazy val cache = Project(id = "cache", base = file("cache"))
   .settings(
     commonSettings,
+    publishSettings,
     fork := true
   )
   .dependsOn(core)
