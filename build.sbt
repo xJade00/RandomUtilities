@@ -26,7 +26,8 @@ lazy val publishSettings = Seq(
   ),
   homepage := Some(url("https://github.com/xaanit/RandomUtilities")),
   developers := devs,
-  autoAPIMappings := true
+  autoAPIMappings := true,
+  organization := "it.xaan"
 )
 
 val commonSettings = Seq(
@@ -46,15 +47,20 @@ val commonSettings = Seq(
 )
 
 
-lazy val core = (project in file("."))
-  .settings(commonSettings, publishSettings) //we need a variable reference to the root project
+lazy val core = (project in file(".")) //we need a variable reference to the root project
+  .settings(
+    commonSettings,
+    publishSettings,
+    moduleName := "random-core"
+  )
 
 
 lazy val result = Project(id = "result", base = file("result"))
   .settings(
     commonSettings,
     publishSettings,
-    fork := true
+    fork := true,
+    moduleName := "random-result"
   )
   .dependsOn(core)
 
@@ -62,7 +68,8 @@ lazy val cache = Project(id = "cache", base = file("cache"))
   .settings(
     commonSettings,
     publishSettings,
-    fork := true
+    fork := true,
+    moduleName := "random-cache"
   )
   .dependsOn(core)
 
