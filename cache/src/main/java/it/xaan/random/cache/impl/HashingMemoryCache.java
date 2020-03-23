@@ -87,4 +87,20 @@ public class HashingMemoryCache<K, V> implements Cache<K, V> {
   public int size() {
     return underlying.size();
   }
+
+  @Override
+  public int hashCode() {
+    return underlying.hashCode();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public boolean equals(Object obj) {
+    return this == obj || obj instanceof HashingMemoryCache<?, ?> && ((HashingMemoryCache<K, V>) obj).underlying.equals(this.underlying);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("HashingMemoryCache[underlying=%s]", underlying);
+  }
 }
