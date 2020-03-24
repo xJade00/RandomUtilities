@@ -27,11 +27,12 @@ lazy val publishSettings = Seq(
   homepage := Some(url("https://github.com/xaanit/RandomUtilities")),
   developers := devs,
   autoAPIMappings := true,
-  organization := "it.xaan"
+  organization := "it.xaan",
+  crossPaths := false
 )
 
 val commonSettings = Seq(
-  version := "1.0.0",
+  version := "1.0.1",
   developers := devs,
   startYear := Some(2020),
   homepage := Some(new URL("https://github.com/xaanit/RandomUtilities")),
