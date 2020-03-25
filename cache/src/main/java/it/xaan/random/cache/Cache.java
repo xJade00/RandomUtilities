@@ -28,7 +28,14 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+/**
+ * Represents a Cache of objects that can be stored anywhere.
+ *
+ * @param <K> The type for the keys.
+ * @param <V> The type for the values.
+ */
 @SuppressWarnings("unused")
 public interface Cache<K, V> {
 
@@ -78,9 +85,12 @@ public interface Cache<K, V> {
    * @param mapper The BiFunction that maps entries to new entries.
    * @param <A>    The key type of the new Cache.
    * @param <B>    The value type of the new Cache.
+   * @throws NotImplementedException When the subclass doesn't allow mapping.
    * @return A new Cache containing the new entries the mapper found.
    */
-  <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper);
+  default <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper) {
+    throw new NotImplementedException();
+  }
 
   /**
    * See {@link #store(Object, Object)}.

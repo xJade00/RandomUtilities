@@ -20,16 +20,16 @@ package it.xaan.random.cache.impl;
 import it.xaan.random.cache.Cache;
 import it.xaan.random.core.Pair;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 
-public class HashingMemoryCache<K, V> implements Cache<K, V> {
-
-  private final Map<K, V> underlying;
+/**
+ * Represents an in-memory cache that uses a {@link HashMap} as the underlying map.
+ *
+ * @param <K> The type of the keys.
+ * @param <V> The type of the values.
+ */
+public class HashingMemoryCache<K, V> extends MapMemoryCache<K, V> {
 
   /**
    * Creates a new {@link HashingMemoryCache} with an initial capacity.
@@ -37,7 +37,7 @@ public class HashingMemoryCache<K, V> implements Cache<K, V> {
    * @param intiialCapacity The initial capacity of this cache.
    */
   public HashingMemoryCache(int intiialCapacity) {
-    this.underlying = new HashMap<>(intiialCapacity);
+    super(new HashMap<>(intiialCapacity));
   }
 
   /**
@@ -45,31 +45,6 @@ public class HashingMemoryCache<K, V> implements Cache<K, V> {
    */
   public HashingMemoryCache() {
     this(16);
-  }
-
-  @Override
-  public Optional<V> getOptional(K key) {
-    return Optional.ofNullable(underlying.get(key));
-  }
-
-  @Override
-  public Optional<V> store(K key, V value) {
-    return Optional.ofNullable(underlying.put(key, value));
-  }
-
-  @Override
-  public Optional<V> invalidate(K key) {
-    return Optional.ofNullable(underlying.remove(key));
-  }
-
-  @Override
-  public Set<Pair<K, V>> entries() {
-    Set<Pair<K, V>> set = new HashSet<>();
-    Set<Entry<K, V>> entries = underlying.entrySet();
-    for (Entry<K, V> entry : entries) {
-      set.add(Pair.from(entry.getKey(), entry.getValue()));
-    }
-    return set;
   }
 
   @Override
@@ -84,23 +59,7 @@ public class HashingMemoryCache<K, V> implements Cache<K, V> {
   }
 
   @Override
-  public int size() {
-    return underlying.size();
-  }
-
-  @Override
-  public int hashCode() {
-    return underlying.hashCode();
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
   public boolean equals(Object obj) {
-    return this == obj || obj instanceof HashingMemoryCache<?, ?> && ((HashingMemoryCache<K, V>) obj).underlying.equals(this.underlying);
-  }
-
-  @Override
-  public String toString() {
-    return String.format("HashingMemoryCache[underlying=%s]", underlying);
+    return this == obj || obj instanceof HashingMemoryCache<?, ?> && super.equals(obj);
   }
 }
