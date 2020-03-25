@@ -48,13 +48,12 @@ val commonSettings = Seq(
 )
 
 
-lazy val core = (project in file(".")) //we need a variable reference to the root project
+lazy val core = Project(id = "core", base = file("core"))
   .settings(
     commonSettings,
     publishSettings,
     moduleName := "random-core"
   )
-
 
 lazy val result = Project(id = "result", base = file("result"))
   .settings(
@@ -73,5 +72,9 @@ lazy val cache = Project(id = "cache", base = file("cache"))
     moduleName := "random-cache"
   )
   .dependsOn(core)
+
+
+lazy val all = Project(id = "all", base = file("."))
+  .dependsOn(core, result, cache)
 
 
