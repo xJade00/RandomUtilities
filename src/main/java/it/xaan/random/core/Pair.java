@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * @since 1.0.0
  */
 @SuppressWarnings("WeakerAccess")
-public class Pair<A, B> {
+public final class Pair<A, B> {
 
   @Nullable
   private final A first;
