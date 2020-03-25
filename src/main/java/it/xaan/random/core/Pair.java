@@ -86,7 +86,7 @@ public class Pair<A, B> {
       return false;
     }
     Pair<?, ?> other = (Pair<?, ?>) obj;
-    return Objects.equals(this.first, other.first) && Objects.equals(this.first, other.first);
+    return Objects.equals(this.first, other.first) && Objects.equals(this.second, other.second);
   }
 
   @Override
