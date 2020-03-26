@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public interface MutliValueCache<K, V, C extends Collection<V>> extends Cache<K, C> {
+public interface MultiValueCache<K, V, C extends Collection<V>> extends Cache<K, C> {
 
   // Return types are non-null by default but this tells IJ to override the superclass.
 

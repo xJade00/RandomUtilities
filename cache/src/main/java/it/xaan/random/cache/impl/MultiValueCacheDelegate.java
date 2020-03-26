@@ -18,7 +18,7 @@
 package it.xaan.random.cache.impl;
 
 import it.xaan.random.cache.Cache;
-import it.xaan.random.cache.MutliValueCache;
+import it.xaan.random.cache.MultiValueCache;
 import it.xaan.random.core.Pair;
 import java.util.Collection;
 import java.util.Optional;
@@ -28,14 +28,14 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 /**
- * Represents a {@link MutliValueCache} backed by a {@link Cache}.
+ * Represents a {@link MultiValueCache} backed by a {@link Cache}.
  *
  * @param <K> The type for the keys.
  * @param <V> The type for the values.
  * @param <C> The type of Collection to use.
  */
 public class MultiValueCacheDelegate<K, V, C extends Collection<V>> implements
-    MutliValueCache<K, V, C> {
+    MultiValueCache<K, V, C> {
 
   private final Cache<K, C> delegate;
   private final Supplier<C> supplier;
