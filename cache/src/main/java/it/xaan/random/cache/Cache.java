@@ -204,7 +204,7 @@ public interface Cache<K, V> {
    * @param filter The Predicate that acts as a filter.
    * @return A list containing all values associated with matched keys.
    */
-  default List<V> find(Predicate<K> filter) {
+  default List<V> where(Predicate<K> filter) {
     List<V> list = new ArrayList<>();
     Set<Pair<K, V>> entries = entries();
     for (Pair<K, V> entry : entries) {
