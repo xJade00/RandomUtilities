@@ -26,6 +26,6 @@ implementation 'it.xaan:random-core:$VERSION$'
 ```
 
 Sbt:
-```
+```sbt
 libraryDependencies += "it.xaan" % "random-core" % "$VERSION$"
 ```
