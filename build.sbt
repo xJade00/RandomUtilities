@@ -37,6 +37,7 @@ val commonSettings = Seq(
   startYear := Some(2020),
   homepage := Some(new URL("https://github.com/xaanit/RandomUtilities")),
   libraryDependencies ++= Seq(
+    "com.novocode" % "junit-interface" % "0.11" % "test",
     "junit" % "junit" % "4.13" % "test",
     "com.google.code.findbugs" % "jsr305" % "3.0.2"
   ),
@@ -44,7 +45,8 @@ val commonSettings = Seq(
     val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
     else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-  }
+  },
+  testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v", "-s", "--summary=2")
 )
 
 
@@ -75,6 +77,12 @@ lazy val cache = Project(id = "cache", base = file("cache"))
 
 
 lazy val all = Project(id = "all", base = file("."))
+  .settings(
+    commonSettings,
+    publishSettings,
+    fork := true,
+    moduleName := "random-all"
+  )
   .dependsOn(core, result, cache)
 
 
