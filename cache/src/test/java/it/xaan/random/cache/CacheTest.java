@@ -81,7 +81,7 @@ public class CacheTest {
   public void testStore() {
     final Cache<String, String> test = create();
     Assert.assertFalse(test.store(Pair.from("testStoreKey", "testStoreValue")).isPresent());
-    Assert.assertEquals(Optional.of("otherTestStoreValue"),
+    Assert.assertEquals(Optional.of("testStoreValue"),
         test.store(Pair.from("testStoreKey", "otherTestStoreValue")));
   }
 

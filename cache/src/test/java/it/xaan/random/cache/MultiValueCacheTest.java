@@ -34,8 +34,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public final class MultiValueCacheTest {
-
-  private MultiValueCache<String, String, List<String>> create() {
+  private MultiValueCache<String, String, List<String>> create(boolean setup) {
     MultiValueCache<String, String, List<String>> test = new MultiValueCache<String, String, List<String>>() {
       private final Map<String, List<String>> map = new HashMap<>();
       @Override
@@ -76,7 +75,7 @@ public final class MultiValueCacheTest {
         return ArrayList::new;
       }
     };
-    setup(test);
+    if(setup) setup(test);
     return test;
   }
 
@@ -90,14 +89,14 @@ public final class MultiValueCacheTest {
 
   @Test
   public void testHas() {
-    final MultiValueCache<String, String, List<String>> test = create();
+    final MultiValueCache<String, String, List<String>> test = create(true);
     Assert.assertTrue(test.has("key"));
     Assert.assertFalse(test.has("unknown key"));
   }
 
   @Test
   public void testStore() {
-    final MultiValueCache<String, String, List<String>> test = create();
+    final MultiValueCache<String, String, List<String>> test = create(true);
     Optional<List<String>> old = test.store("testStore", "1", "2", "3", "4", "5");
     Assert.assertTrue(old.isPresent() && old.get().isEmpty());
     Optional<List<String>> after = test.store("testStore", "1", "2", "3", "4");
@@ -106,13 +105,9 @@ public final class MultiValueCacheTest {
 
   @Test
   public void testFlatEntries() {
-    final MultiValueCache<String, String, List<String>> test = create();
+    final MultiValueCache<String, String, List<String>> test = create(false);
     Set<Pair<String, String>> flattened = new HashSet<>( Arrays.asList(Pair.from("two", "1"), Pair.from("two", "2")));
+    test.store("two", "1", "2");
     Assert.assertEquals(flattened, test.flatEntries());
-  }
-
-  @Test
-  public void alwaysFail() {
-    Assert.fail("Should always fail.");
   }
 }
