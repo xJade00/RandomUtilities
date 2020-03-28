@@ -155,7 +155,7 @@ public class ResultTest {
   @Test
   public void testGet() {
     // Get should never throw for success
-    Assert.assertEquals("Success State", success.get());
+    Assert.assertEquals("Successful state.", success.get());
 
     // But it should on other states.
     Assert.assertThrows(NoSuchElementException.class, empty::get);
@@ -166,7 +166,7 @@ public class ResultTest {
   public void testOrElse() {
     final String other = "Hello world";
     // Shouldn't be else for success
-    Assert.assertEquals("Success State", success.orElse(other));
+    Assert.assertEquals("Successful state.", success.orElse(other));
     Assert.assertNotNull(success.orElse(null));
 
     // Should be else for everything else
@@ -178,7 +178,7 @@ public class ResultTest {
   public void testOrElseThrow() {
     final String other = "Hello world";
     // Shouldn't be else for success
-    Assert.assertEquals("Success State",
+    Assert.assertEquals("Successful state.",
         success.orElseThrow(() -> new IllegalStateException("Shouldn't be here.")));
 
     // Should be else for everything else

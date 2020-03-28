@@ -84,5 +84,4 @@ lazy val all = Project(id = "all", base = file("."))
     moduleName := "random-all"
   )
   .dependsOn(core, result, cache)
-
-
+  .aggregate(cache, result, core)
