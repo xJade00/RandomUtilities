@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
  * Represents an in-memory cache that uses a {@link Map} as the underlying map.
@@ -34,15 +36,20 @@ import java.util.Set;
 public class MapMemoryCache<K, V> implements Cache<K, V> {
 
   private final Map<K, V> underlying;
+  private final Supplier<Map<K, V>> supplier;
 
   /**
    * Creates a new {@link MapMemoryCache} with the specified {@link Map} as the underlying
    * implementation.
    *
-   * @param underlying THe underlying Map to use.
+   * @param supplier The supplier for the map the cache should use. This map should be empty.
    */
-  public MapMemoryCache(final Map<K, V> underlying) {
-    this.underlying = underlying;
+  public MapMemoryCache(final Supplier<Map<K, V>> supplier) {
+    this.underlying = supplier.get();
+    if (this.underlying.size() > 0) {
+      throw new IllegalStateException("Supplier must return a new, empty map.");
+    }
+    this.supplier = supplier;
   }
 
   @Override
@@ -68,6 +75,18 @@ public class MapMemoryCache<K, V> implements Cache<K, V> {
       set.add(Pair.from(entry.getKey(), entry.getValue()));
     }
     return set;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper) {
+    final Cache<A, B> cache = new MapMemoryCache<>(() -> (Map<A, B>) supplier.get());
+    Set<Pair<K, V>> entries = entries();
+    for (Pair<K, V> entry : entries) {
+      Pair<A, B> mapped = mapper.apply(entry.getFirst(), entry.getSecond());
+      cache.store(mapped);
+    }
+    return cache;
   }
 
 
