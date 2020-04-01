@@ -32,7 +32,7 @@ lazy val publishSettings = Seq(
 )
 
 val commonSettings = Seq(
-  version := "1.0.1",
+  version := "1.0.2",
   developers := devs,
   startYear := Some(2020),
   homepage := Some(new URL("https://github.com/xaanit/RandomUtilities")),
