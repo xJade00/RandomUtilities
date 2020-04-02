@@ -34,12 +34,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public final class MultiValueCacheTest {
+
   private MultiValueCache<String, String, List<String>> create(boolean setup) {
     MultiValueCache<String, String, List<String>> test = new MultiValueCache<String, String, List<String>>() {
       private final Map<String, List<String>> map = new HashMap<>();
+
       @Override
       public Optional<List<String>> getOptional(String key) {
-        return Optional.of(get(key)) ;
+        return Optional.of(get(key));
       }
 
       @Override
@@ -57,7 +59,7 @@ public final class MultiValueCacheTest {
       @Override
       public Set<Pair<String, List<String>>> entries() {
         Set<Pair<String, List<String>>> entries = new HashSet<>();
-        for(Entry<String, List<String>> entry : map.entrySet()) {
+        for (Entry<String, List<String>> entry : map.entrySet()) {
           entries.add(Pair.from(entry.getKey(), entry.getValue()));
         }
         return entries;
@@ -75,7 +77,9 @@ public final class MultiValueCacheTest {
         return ArrayList::new;
       }
     };
-    if(setup) setup(test);
+    if (setup) {
+      setup(test);
+    }
     return test;
   }
 
@@ -100,13 +104,15 @@ public final class MultiValueCacheTest {
     Optional<List<String>> old = test.store("testStore", "1", "2", "3", "4", "5");
     Assert.assertTrue(old.isPresent() && old.get().isEmpty());
     Optional<List<String>> after = test.store("testStore", "1", "2", "3", "4");
-    Assert.assertEquals(Arrays.asList("1", "2", "3", "4", "5"), after.orElse(Collections.emptyList()));
+    Assert.assertEquals(Arrays.asList("1", "2", "3", "4", "5"),
+        after.orElse(Collections.emptyList()));
   }
 
   @Test
   public void testFlatEntries() {
     final MultiValueCache<String, String, List<String>> test = create(false);
-    Set<Pair<String, String>> flattened = new HashSet<>( Arrays.asList(Pair.from("two", "1"), Pair.from("two", "2")));
+    Set<Pair<String, String>> flattened = new HashSet<>(
+        Arrays.asList(Pair.from("two", "1"), Pair.from("two", "2")));
     test.store("two", "1", "2");
     Assert.assertEquals(flattened, test.flatEntries());
   }

@@ -32,4 +32,6 @@ import javax.annotation.meta.TypeQualifierDefault;
 @Nonnull
 @TypeQualifierDefault(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ReturnTypesAreNonNullByDefault {}
+public @interface ReturnTypesAreNonNullByDefault {
+
+}

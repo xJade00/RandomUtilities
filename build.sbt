@@ -3,13 +3,6 @@ description := "A bunch of random utilities."
 autoScalaLibrary := false // We don't want people using this to auto have the java SDK
 
 
-val devs = List(
-  Developer(id = "xaanit",
-    name = "Jacob Frazier",
-    email = "shadowjacob1@gmail.com",
-    url = new URL("https://www.xaan.it"))
-)
-
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
   publishArtifact in Test := false,
@@ -30,7 +23,43 @@ lazy val publishSettings = Seq(
   organization := "it.xaan",
   crossPaths := false
 )
-
+lazy val core = Project(id = "core", base = file("core"))
+  .settings(
+    commonSettings,
+    publishSettings,
+    moduleName := "random-core"
+  )
+lazy val result = Project(id = "result", base = file("result"))
+  .settings(
+    commonSettings,
+    publishSettings,
+    fork := true,
+    moduleName := "random-result"
+  )
+  .dependsOn(core)
+lazy val cache = Project(id = "cache", base = file("cache"))
+  .settings(
+    commonSettings,
+    publishSettings,
+    fork := true,
+    moduleName := "random-cache"
+  )
+  .dependsOn(core)
+lazy val all = Project(id = "all", base = file("."))
+  .settings(
+    commonSettings,
+    publishSettings,
+    fork := true,
+    moduleName := "random-all"
+  )
+  .dependsOn(core, result, cache)
+  .aggregate(cache, result, core)
+val devs = List(
+  Developer(id = "xaanit",
+    name = "Jacob Frazier",
+    email = "shadowjacob1@gmail.com",
+    url = new URL("https://www.xaan.it"))
+)
 val commonSettings = Seq(
   version := "1.0.2",
   developers := devs,
@@ -48,40 +77,3 @@ val commonSettings = Seq(
   },
   testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v", "-s", "--summary=2")
 )
-
-
-lazy val core = Project(id = "core", base = file("core"))
-  .settings(
-    commonSettings,
-    publishSettings,
-    moduleName := "random-core"
-  )
-
-lazy val result = Project(id = "result", base = file("result"))
-  .settings(
-    commonSettings,
-    publishSettings,
-    fork := true,
-    moduleName := "random-result"
-  )
-  .dependsOn(core)
-
-lazy val cache = Project(id = "cache", base = file("cache"))
-  .settings(
-    commonSettings,
-    publishSettings,
-    fork := true,
-    moduleName := "random-cache"
-  )
-  .dependsOn(core)
-
-
-lazy val all = Project(id = "all", base = file("."))
-  .settings(
-    commonSettings,
-    publishSettings,
-    fork := true,
-    moduleName := "random-all"
-  )
-  .dependsOn(core, result, cache)
-  .aggregate(cache, result, core)

@@ -126,7 +126,8 @@ public class CacheTest {
   @Test
   public void testStream() {
     final Cache<String, String> test = create();
-    List<Pair<String, String>> list = Arrays.asList(Pair.from("hello", "world"), Pair.from("key", "value"));
+    List<Pair<String, String>> list = Arrays
+        .asList(Pair.from("hello", "world"), Pair.from("key", "value"));
     test.stream().iterator().forEachRemaining(pair -> Assert.assertTrue(list.contains(pair)));
   }
 

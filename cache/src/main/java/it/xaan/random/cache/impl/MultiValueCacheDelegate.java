@@ -66,9 +66,7 @@ public class MultiValueCacheDelegate<K, V, C extends Collection<V>> implements
   @Override
   public Optional<C> invalidate(K key) {
     Optional<C> old = getOptional(key);
-    if (!old.orElseGet(supplier()).isEmpty()) {
-      delegate.invalidate(key); // No need to try and invalidate if it'd do nothing.
-    }
+    delegate.invalidate(key);
     return old;
   }
 

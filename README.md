@@ -6,7 +6,7 @@ These are designed into modules that you can use individually. Everything depend
 
 # IMPORTANT NOTE FOR DOWNLOADING.
 
-Due to my inexperience with deploying to maven central, both 1.0.0 and 1.0.1 aren't suitable for use. Please use 1.0.2 onward.
+Due to my inexperience with deploying to maven central, both 1.0.0 and 1.0.1 aren't suitable for use. Please use 1.0.2 onward.  
 
 ### All current modules:
 

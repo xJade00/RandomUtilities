@@ -85,8 +85,8 @@ public interface Cache<K, V> {
    * @param mapper The BiFunction that maps entries to new entries.
    * @param <A>    The key type of the new Cache.
    * @param <B>    The value type of the new Cache.
-   * @throws NotImplementedException When the subclass doesn't allow mapping.
    * @return A new Cache containing the new entries the mapper found.
+   * @throws NotImplementedException When the subclass doesn't allow mapping.
    */
   default <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper) {
     throw new NotImplementedException();
@@ -115,7 +115,7 @@ public interface Cache<K, V> {
    */
   default List<V> invalidateWhere(Predicate<K> filter) {
     List<V> list = new ArrayList<>();
-    List<Pair<K,V>> found = invalidateWhere((key, $) -> filter.test(key));
+    List<Pair<K, V>> found = invalidateWhere((key, $) -> filter.test(key));
     for (Pair<K, V> kvPair : found) {
       list.add(kvPair.getSecond());
     }
@@ -135,7 +135,7 @@ public interface Cache<K, V> {
   default List<Pair<K, V>> invalidateWhere(BiPredicate<K, V> filter) {
     List<Pair<K, V>> list = new ArrayList<>();
     for (Pair<K, V> entry : entries()) {
-      if(filter.test(entry.getFirst(), entry.getSecond())) {
+      if (filter.test(entry.getFirst(), entry.getSecond())) {
         list.add(entry);
         invalidate(entry.getFirst());
       }
