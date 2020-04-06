@@ -3,13 +3,6 @@ description := "A bunch of random utilities."
 autoScalaLibrary := false // We don't want people using this to auto have the java SDK
 
 
-val devs = List(
-  Developer(id = "xaanit",
-    name = "Jacob Frazier",
-    email = "shadowjacob1@gmail.com",
-    url = new URL("https://www.xaan.it"))
-)
-
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
   publishArtifact in Test := false,
@@ -27,34 +20,15 @@ lazy val publishSettings = Seq(
   homepage := Some(url("https://github.com/xaanit/RandomUtilities")),
   developers := devs,
   autoAPIMappings := true,
-  organization := "it.xaan"
+  organization := "it.xaan",
+  crossPaths := false
 )
-
-val commonSettings = Seq(
-  version := "1.0.0",
-  developers := devs,
-  startYear := Some(2020),
-  homepage := Some(new URL("https://github.com/xaanit/RandomUtilities")),
-  libraryDependencies ++= Seq(
-    "junit" % "junit" % "4.13" % "test",
-    "com.google.code.findbugs" % "jsr305" % "3.0.2"
-  ),
-  publishTo := {
-    val nexus = "https://oss.sonatype.org/"
-    if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
-    else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-  }
-)
-
-
-lazy val core = (project in file(".")) //we need a variable reference to the root project
+lazy val core = Project(id = "core", base = file("core"))
   .settings(
     commonSettings,
     publishSettings,
     moduleName := "random-core"
   )
-
-
 lazy val result = Project(id = "result", base = file("result"))
   .settings(
     commonSettings,
@@ -63,7 +37,6 @@ lazy val result = Project(id = "result", base = file("result"))
     moduleName := "random-result"
   )
   .dependsOn(core)
-
 lazy val cache = Project(id = "cache", base = file("cache"))
   .settings(
     commonSettings,
@@ -72,5 +45,35 @@ lazy val cache = Project(id = "cache", base = file("cache"))
     moduleName := "random-cache"
   )
   .dependsOn(core)
-
-
+lazy val all = Project(id = "all", base = file("."))
+  .settings(
+    commonSettings,
+    publishSettings,
+    fork := true,
+    moduleName := "random-all"
+  )
+  .dependsOn(core, result, cache)
+  .aggregate(cache, result, core)
+val devs = List(
+  Developer(id = "xaanit",
+    name = "Jacob Frazier",
+    email = "shadowjacob1@gmail.com",
+    url = new URL("https://www.xaan.it"))
+)
+val commonSettings = Seq(
+  version := "1.0.2",
+  developers := devs,
+  startYear := Some(2020),
+  homepage := Some(new URL("https://github.com/xaanit/RandomUtilities")),
+  libraryDependencies ++= Seq(
+    "com.novocode" % "junit-interface" % "0.11" % "test",
+    "junit" % "junit" % "4.13" % "test",
+    "com.google.code.findbugs" % "jsr305" % "3.0.2"
+  ),
+  publishTo := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+    else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  },
+  testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v", "-s", "--summary=2")
+)

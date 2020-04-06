@@ -15,35 +15,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package it.xaan.random.cache;
+package it.xaan.random.cache.impl;
 
+import it.xaan.random.cache.Cache;
 import it.xaan.random.core.Pair;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
-public class HashingMemoryCache<K, V> implements Cache<K, V> {
+/**
+ * Represents an in-memory cache that uses a {@link Map} as the underlying map.
+ *
+ * @param <K> The type of the keys.
+ * @param <V> The type of the values.
+ */
+public class MapMemoryCache<K, V> implements Cache<K, V> {
 
   private final Map<K, V> underlying;
+  private final Supplier<Map<K, V>> supplier;
 
   /**
-   * Creates a new {@link HashingMemoryCache} with an initial capacity.
+   * Creates a new {@link MapMemoryCache} with the specified {@link Map} as the underlying
+   * implementation.
    *
-   * @param intiialCapacity The initial capacity of this cache.
+   * @param supplier The supplier for the map the cache should use. This map should be empty.
    */
-  public HashingMemoryCache(int intiialCapacity) {
-    this.underlying = new HashMap<>(intiialCapacity);
-  }
-
-  /**
-   * See {@link #HashingMemoryCache(int)}. Initial capacity is set to 16.
-   */
-  public HashingMemoryCache() {
-    this(16);
+  public MapMemoryCache(final Supplier<Map<K, V>> supplier) {
+    this.underlying = supplier.get();
+    if (this.underlying.size() > 0) {
+      throw new IllegalStateException("Supplier must return a new, empty map.");
+    }
+    this.supplier = supplier;
   }
 
   @Override
@@ -72,8 +78,9 @@ public class HashingMemoryCache<K, V> implements Cache<K, V> {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper) {
-    final Cache<A, B> cache = new HashingMemoryCache<>(size());
+    final Cache<A, B> cache = new MapMemoryCache<>(() -> (Map<A, B>) supplier.get());
     Set<Pair<K, V>> entries = entries();
     for (Pair<K, V> entry : entries) {
       Pair<A, B> mapped = mapper.apply(entry.getFirst(), entry.getSecond());
@@ -82,8 +89,27 @@ public class HashingMemoryCache<K, V> implements Cache<K, V> {
     return cache;
   }
 
+
   @Override
   public int size() {
     return underlying.size();
+  }
+
+  @Override
+  public int hashCode() {
+    return underlying.hashCode();
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public boolean equals(Object obj) {
+    return this == obj
+        || obj instanceof MapMemoryCache<?, ?> && ((MapMemoryCache<K, V>) obj).underlying
+        .equals(this.underlying);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("MapMemoryCache[underlying=%s]", underlying);
   }
 }

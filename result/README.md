@@ -27,8 +27,27 @@ As you can see, I only use onEmpty and onError once, as the other methods only r
 
 ### Downloading
 
+Replace $VERSION$ with the wanted version.
+
 Maven:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>it.xaan</groupId>
+    <artifactId>random-result</artifactId>
+    <version>$VERSION$</version>
+  </dependency>
+</dependencies>
+```
 
 Gradle:
 
+```groovy
+implementation 'it.xaan:random-result:$VERSION$'
+```
+
 Sbt:
+```sbt
+libraryDependencies += "it.xaan" % "random-result" % "$VERSION$"
+```

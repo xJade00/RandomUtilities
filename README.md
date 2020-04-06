@@ -4,6 +4,10 @@ A bunch of random utilities I either have needed / think are useful to have. Yes
 
 These are designed into modules that you can use individually. Everything depends on the core module but it will work on it's own. Everything module is kept up to date with each other, meaning that if one module updates they all do. Check the patch notes to see if anything special about your specific module changed.
 
+# IMPORTANT NOTE FOR DOWNLOADING.
+
+Due to my inexperience with deploying to maven central, both 1.0.0 and 1.0.1 aren't suitable for use. Please use 1.0.2 onward.  
+
 ### All current modules:
 
 | Name                      | Description                                                                                       | Status                                           | Language |
@@ -19,3 +23,4 @@ These are designed into modules that you can use individually. Everything depend
 
 Core is made up of generally useful classes that many modules might rely on. While it can be downloaded by itself, that's not usually what you'll do. All modules depend on it, and as such
 you'll have it by using any module.
+

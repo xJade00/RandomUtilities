@@ -28,7 +28,14 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+/**
+ * Represents a Cache of objects that can be stored anywhere.
+ *
+ * @param <K> The type for the keys.
+ * @param <V> The type for the values.
+ */
 @SuppressWarnings("unused")
 public interface Cache<K, V> {
 
@@ -79,8 +86,11 @@ public interface Cache<K, V> {
    * @param <A>    The key type of the new Cache.
    * @param <B>    The value type of the new Cache.
    * @return A new Cache containing the new entries the mapper found.
+   * @throws NotImplementedException When the subclass doesn't allow mapping.
    */
-  <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper);
+  default <A, B> Cache<A, B> map(BiFunction<K, V, Pair<A, B>> mapper) {
+    throw new NotImplementedException();
+  }
 
   /**
    * See {@link #store(Object, Object)}.
@@ -105,7 +115,7 @@ public interface Cache<K, V> {
    */
   default List<V> invalidateWhere(Predicate<K> filter) {
     List<V> list = new ArrayList<>();
-    List<Pair<K,V>> found = invalidateWhere((key, $) -> filter.test(key));
+    List<Pair<K, V>> found = invalidateWhere((key, $) -> filter.test(key));
     for (Pair<K, V> kvPair : found) {
       list.add(kvPair.getSecond());
     }
@@ -125,7 +135,7 @@ public interface Cache<K, V> {
   default List<Pair<K, V>> invalidateWhere(BiPredicate<K, V> filter) {
     List<Pair<K, V>> list = new ArrayList<>();
     for (Pair<K, V> entry : entries()) {
-      if(filter.test(entry.getFirst(), entry.getSecond())) {
+      if (filter.test(entry.getFirst(), entry.getSecond())) {
         list.add(entry);
         invalidate(entry.getFirst());
       }
@@ -194,7 +204,7 @@ public interface Cache<K, V> {
    * @param filter The Predicate that acts as a filter.
    * @return A list containing all values associated with matched keys.
    */
-  default List<V> find(Predicate<K> filter) {
+  default List<V> where(Predicate<K> filter) {
     List<V> list = new ArrayList<>();
     Set<Pair<K, V>> entries = entries();
     for (Pair<K, V> entry : entries) {

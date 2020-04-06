@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * @since 1.0.0
  */
 @SuppressWarnings("WeakerAccess")
-public class Pair<A, B> {
+public final class Pair<A, B> {
 
   @Nullable
   private final A first;
@@ -86,7 +86,7 @@ public class Pair<A, B> {
       return false;
     }
     Pair<?, ?> other = (Pair<?, ?>) obj;
-    return Objects.equals(this.first, other.first) && Objects.equals(this.first, other.first);
+    return Objects.equals(this.first, other.first) && Objects.equals(this.second, other.second);
   }
 
   @Override

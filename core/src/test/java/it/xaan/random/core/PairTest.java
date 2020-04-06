@@ -46,19 +46,6 @@ public class PairTest {
   }
 
   @Test
-  public void testHashcode() {
-    Pair<String, String> ea = Pair.from("Ea", "Ea");
-    Pair<String, String> fb = Pair.from("FB", "FB");
-    // Test hashcode's contract
-    // Consistency
-    Assert.assertEquals(72513, ea.hashCode());
-    Assert.assertEquals(72513, ea.hashCode());
-    // Same hashcode doesn't mean same object.
-    Assert.assertEquals(ea.hashCode(), fb.hashCode());
-    Assert.assertNotEquals(ea, fb);
-  }
-
-  @Test
   public void testGet() {
     Assert.assertEquals("Hello", test.getFirst());
     Assert.assertEquals("World", test.getSecond());
