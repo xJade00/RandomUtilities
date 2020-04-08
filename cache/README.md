@@ -5,9 +5,22 @@ A collection of caches for... caching. Allows you to cache in whatever way possi
 ### Usage
 
 ```java
-Cache<String, String> cache = new HashingMemoryCache<>();
+// Single value cache
+Cache<String, String> cache = new MapMemoryCache<>(HashMap::new);
 cache.store("Hello", "World");
 System.out.println(cache.get("Hello")); // prints World
+
+// Multi value cache
+Cache<String, List<String>> cache = new MultiValueCacheDelegate(
+  new MapMemoryCache(HashMap::new),
+  ArrayList::new    
+);
+
+// Or if you want things like store(K key, V... values)
+MutliValueCache<String, String, List<String>> cache = new MultiValueCacheDelegate(
+                                                        new MapMemoryCache(HashMap::new),
+                                                        ArrayList::new    
+                                                      );
 ```
 
 ### Downloading
