@@ -71,7 +71,10 @@ public interface MultiValueCache<K, V, C extends Collection<V>> extends Cache<K,
     C stored = supplier().get();
     stored.addAll(old);
     for (V value : values) {
-      stored.add(value);
+      // Null values not allowed
+      if (value != null) {
+        stored.add(value);
+      }
     }
     store(key, stored);
     return Optional.of(old);
