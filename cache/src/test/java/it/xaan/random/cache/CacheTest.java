@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Test;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -179,8 +180,15 @@ public class CacheTest {
   @Test
   public void testValues() {
     final Cache<String, String> test = create();
-    final Set<String> values = new HashSet<>(Arrays.asList("value", "world"));
-    Assert.assertEquals(values, test.values());
+    final List<String> control = Arrays.stream(new String[]{"value", "world"})
+        .sorted()
+        .collect(Collectors.toList());
+
+    final List<String> values = test.values().stream()
+        .sorted()
+        .collect(Collectors.toList());
+
+    Assert.assertEquals(control, values);
   }
 
 }

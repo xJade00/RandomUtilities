@@ -111,7 +111,7 @@ public final class MultiValueCacheTest {
   @Test
   public void testFlatEntries() {
     final MultiValueCache<String, String, List<String>> test = create(false);
-    Set<Pair<String, String>> flattened = new HashSet<>(
+    List<Pair<String, String>> flattened = new ArrayList<>(
         Arrays.asList(Pair.from("two", "1"), Pair.from("two", "2")));
     test.store("two", "1", "2");
     Assert.assertEquals(flattened, test.flatEntries());
