@@ -59,6 +59,11 @@ public class MapMemoryCache<K, V> implements Cache<K, V> {
 
   @Override
   public Optional<V> store(K key, V value) {
+    // Certain maps allow null keys, value should be nevernull anyway
+    // but we have to assume people will pass it.
+    if (value == null) {
+      return Optional.empty();
+    }
     return Optional.ofNullable(underlying.put(key, value));
   }
 

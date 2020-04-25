@@ -176,7 +176,6 @@ public class ResultTest {
 
   @Test
   public void testOrElseThrow() {
-    final String other = "Hello world";
     // Shouldn't be else for success
     Assert.assertEquals("Successful state.",
         success.orElseThrow(() -> new IllegalStateException("Shouldn't be here.")));
@@ -186,5 +185,18 @@ public class ResultTest {
         () -> empty.orElseThrow(() -> new NoSuchElementException("No such element.")));
     Assert.assertThrows(NoSuchElementException.class,
         () -> error.orElseThrow(() -> new NoSuchElementException("No such element.")));
+  }
+
+  @Test
+  public void testGetError() {
+    Assert.assertThrows(NoSuchElementException.class, success::getError);
+    Assert.assertSame(IllegalStateException.class, error.getError().getClass());
+  }
+
+  @Test
+  public void testGetErrorClass() {
+    Assert.assertThrows(NoSuchElementException.class, () -> success.getError(Object.class));
+    Assert.assertTrue(error.getError(IllegalStateException.class).isPresent());
+    Assert.assertFalse(error.getError(ResultTest.class).isPresent());
   }
 }
