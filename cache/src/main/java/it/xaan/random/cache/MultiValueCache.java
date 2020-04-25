@@ -18,8 +18,9 @@
 package it.xaan.random.cache;
 
 import it.xaan.random.core.Pair;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -86,14 +87,14 @@ public interface MultiValueCache<K, V, C extends Collection<V>> extends Cache<K,
    * @return A {@link Set} of all entries flattened.
    */
   @SuppressWarnings("ConstantConditions")
-  default Set<Pair<K, V>> flatEntries() {
-    Set<Pair<K, V>> set = new HashSet<>();
+  default Collection<Pair<K, V>> flatEntries() {
+    List<Pair<K, V>> flattened = new ArrayList<>();
     for (Pair<K, C> entry : entries()) {
       for (V value : entry.getSecond()) {
-        set.add(Pair.from(entry.getFirst(), value));
+        flattened.add(Pair.from(entry.getFirst(), value));
       }
     }
-    return set;
+    return flattened;
   }
 
 

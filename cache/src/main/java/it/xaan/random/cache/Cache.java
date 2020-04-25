@@ -19,6 +19,7 @@ package it.xaan.random.cache;
 
 import it.xaan.random.core.Pair;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -243,8 +244,8 @@ public interface Cache<K, V> {
    *
    * @return A set of all values that are in this cache.
    */
-  default Set<V> values() {
-    Set<V> values = new HashSet<>();
+  default Collection<V> values() {
+    List<V> values = new ArrayList<>();
     entries().forEach(pair -> values.add(pair.getSecond()));
     return values;
   }

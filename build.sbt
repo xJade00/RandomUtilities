@@ -1,8 +1,18 @@
 name := "Random Utilities"
 description := "A bunch of random utilities."
-autoScalaLibrary := false // We don't want people using this to auto have the java SDK
+autoScalaLibrary := false // We don't want people using this to auto have the scala SDK
 
 
+lazy val primitiveSpecializations = createProject(id = "primitive-specializations", settings = Seq(moduleName := "random-primitive-specializations"))
+  .dependsOn(core)
+lazy val core = createProject(id = "core", settings = Seq(moduleName := "random-core"))
+lazy val result = createProject(id = "result", settings = Seq(moduleName := "random-result", fork := true))
+  .dependsOn(core)
+lazy val cache = createProject(id = "cache", settings = Seq(moduleName := "random-cache", fork := true))
+  .dependsOn(core)
+lazy val all = createProject(id = "all", file = Some("."), settings = Seq(moduleName := "random-all", fork := true))
+  .dependsOn(cache, result, core, primitiveSpecializations)
+  .aggregate(cache, result, core, primitiveSpecializations)
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
   publishArtifact in Test := false,
@@ -23,37 +33,6 @@ lazy val publishSettings = Seq(
   organization := "it.xaan",
   crossPaths := false
 )
-lazy val core = Project(id = "core", base = file("core"))
-  .settings(
-    commonSettings,
-    publishSettings,
-    moduleName := "random-core"
-  )
-lazy val result = Project(id = "result", base = file("result"))
-  .settings(
-    commonSettings,
-    publishSettings,
-    fork := true,
-    moduleName := "random-result"
-  )
-  .dependsOn(core)
-lazy val cache = Project(id = "cache", base = file("cache"))
-  .settings(
-    commonSettings,
-    publishSettings,
-    fork := true,
-    moduleName := "random-cache"
-  )
-  .dependsOn(core)
-lazy val all = Project(id = "all", base = file("."))
-  .settings(
-    commonSettings,
-    publishSettings,
-    fork := true,
-    moduleName := "random-all"
-  )
-  .dependsOn(core, result, cache)
-  .aggregate(cache, result, core)
 val devs = List(
   Developer(id = "xaanit",
     name = "Jacob Frazier",
@@ -61,7 +40,7 @@ val devs = List(
     url = new URL("https://www.xaan.it"))
 )
 val commonSettings = Seq(
-  version := "1.0.2",
+  version := "1.1.0",
   developers := devs,
   startYear := Some(2020),
   homepage := Some(new URL("https://github.com/xaanit/RandomUtilities")),
@@ -77,3 +56,15 @@ val commonSettings = Seq(
   },
   testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v", "-s", "--summary=2")
 )
+
+def createProject(
+                   id: String,
+                   file: Option[String] = None,
+                   settings: Seq[SettingsDefinition] = Seq(),
+                 ): Project =
+ Project(id = id, base = sbt.file(file match {
+    case Some(value) => value
+    case None => id
+  }))
+    .settings(commonSettings ++ publishSettings ++ settings: _*)
+
