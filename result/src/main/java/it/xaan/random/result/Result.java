@@ -19,6 +19,7 @@ package it.xaan.random.result;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -294,6 +295,37 @@ public final class Result<T> {
    */
   public T get() {
     return orElseThrow(() -> new NoSuchElementException("Get call on non-successful Result."));
+  }
+
+  /**
+   * Retrieves the current error from this {@link Result} if it's in an Error state, otherwise
+   * errors.
+   *
+   * @return The non-null error.
+   * @throws NoSuchElementException if {@link #isError()} return false;
+   * @since 1.1.0
+   */
+  public Object getError() {
+    if (!isError()) {
+      throw new NoSuchElementException("Get error call on non-error Result");
+    }
+    return this.error;
+  }
+
+  /**
+   * Retrieves the current error from this {@link Result} if it's in an Error state if
+   * the error is of the passed class, otherwise errors.
+   *
+   * @param clazz The class to check against.
+   * @return An {@link Optional} containing the error if it exists and is of the passed class,
+   * otherwise an empty Optional.
+   * @throws NoSuchElementException if {@link #isError(Class)} return false;
+   * @since 1.1.0
+   */
+  public <U> Optional<U> getError(Class<? extends U> clazz) {
+    return Optional.of(getError())
+        .filter(obj -> isError(clazz))
+        .map(clazz::cast);
   }
 
   /**

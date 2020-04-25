@@ -62,7 +62,7 @@ def createProject(
                    file: Option[String] = None,
                    settings: Seq[SettingsDefinition] = Seq(),
                  ): Project =
- Project(id = id, base = sbt.file(file match {
+  Project(id = id, base = sbt.file(file match {
     case Some(value) => value
     case None => id
   }))
